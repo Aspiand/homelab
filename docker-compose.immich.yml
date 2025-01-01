@@ -23,8 +23,6 @@ services:
       - .env
     ports:
       - '2283:2283'
-    networks:
-      - cloudflare_tunnel
     depends_on:
       - redis
       - database
@@ -83,8 +81,3 @@ services:
 
 volumes:
   model-cache:
-
-networks:
-  default:
-  cloudflare_tunnel:
-    external: true

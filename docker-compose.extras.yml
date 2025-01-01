@@ -58,8 +58,3 @@ services:
         reservations:
           cpus: '0.01'
           memory: 32M
-
-networks:
-  default:
-  cloudflare_tunnel:
-    external: true
