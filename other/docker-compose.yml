@@ -1,0 +1,28 @@
+services:
+  db:
+    container_name: public_mysql
+    image: docker.io/mysql
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - /tmp/mysqld/:/var/run/mysqld:rw
+
+  speedtest:
+    container_name: speedtest
+    image: ghcr.io/librespeed/speedtest:latest
+    restart: always
+    environment:
+      MODE: standalone
+      TITLE: "LibreSpeed"
+      #TELEMETRY: "false"
+      #ENABLE_ID_OBFUSCATION: "false"
+      #REDACT_IP_ADDRESSES: "false"
+      #PASSWORD:
+      #EMAIL:
+      #DISABLE_IPINFO: "false"
+      #IPINFO_APIKEY: "your api key"
+      DISTANCE: "km"
+      #WEBPORT: 8080
+    ports:
+      - ${SPEEDTEST_PORT:-8081}:8080
