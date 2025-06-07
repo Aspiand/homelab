@@ -1,14 +1,11 @@
 # TODO
 
 ## In Progress
-* [ ] Backup files
-* [ ] Cleaning up
+* [ ] Backup files & Cleaning up
+* [ ] Test restore immich backup
+* [ ] Learn watchtower
 
 ## Plan
-### Test
-* [ ] test restore backup
-
-### Deploy
 * [ ] Configure sshd config
 * [ ] Install Docker
 * [ ] Setup Immich & restore backups
