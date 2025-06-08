@@ -4,8 +4,9 @@
 * [ ] Backup files & Cleaning up
 * [ ] Test restore immich backup
 * [ ] Learn watchtower
+* [ ] Learn [Nginx Proxy Manager](https://github.com/NginxProxyManager/nginx-proxy-manager)
 
-## Plan
+##
 * [ ] Configure sshd config
 * [ ] Install Docker
 * [ ] Setup Immich & restore backups
