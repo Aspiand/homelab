@@ -1,8 +1,8 @@
 # TODO
 
 ## In Progress
-* [ ] Backup files & Cleaning up
-* [ ] Test restore immich backup
+* [ C ] Backup files & Cleaning up
+* [ P ] Test restore immich backup
 * [ ] Learn watchtower
 * [ ] Learn [Nginx Proxy Manager](https://github.com/NginxProxyManager/nginx-proxy-manager)
 
