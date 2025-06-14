@@ -1,4 +1,4 @@
-version: '3'
+name: infra
 
 services:
   # watchtower:
@@ -26,7 +26,8 @@ services:
   tailscale:
     container_name: tailscale
     image: tailscale/tailscale:latest
-    hostname: tailscale
+    hostname: ${HOSTNAME}
+    network_mode: host
     environment:
       - TS_AUTHKEY=${TS_AUTHKEY}
       - TS_STATE_DIR=/var/lib/tailscale
