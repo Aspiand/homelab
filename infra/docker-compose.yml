@@ -27,14 +27,18 @@ services:
     container_name: tailscale
     image: tailscale/tailscale:latest
     hostname: tailscale
+    environment:
+      - TS_AUTHKEY=${TS_AUTHKEY}
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_USERSPACE=false
     volumes:
       - ts-authkey:/var/lib/tailscale
       - /dev/net/tun:/dev/net/tun
     cap_add:
-      - net_admin
-      - sys_module
-    environment:
-      - TS_AUTHKEY={$TS_AUTHKEY}
-      - TS_STATE_DIR=/var/lib/tailscale
-      - TS_USERSPACE=false
+      - NET_ADMIN
+      - SYS_MODULE
     restart: unless-stopped
+
+volumes:
+  ts-authkey:
+    driver: local
