@@ -10,6 +10,9 @@ services:
     volumes:
       - ${UPLOAD_LOCATION}:/usr/src/app/upload
       - /etc/localtime:/etc/localtime:ro
+    networks:
+      - default
+      - cloudflare
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
     env_file:
@@ -34,7 +37,7 @@ services:
     #   service: cpu # set to one of [armnn, cuda, rocm, openvino, openvino-wsl, rknn] for accelerated inference - use the `-wsl` version for WSL2 where applicable
     volumes:
       - model-cache:/cache
-    labels: 
+    labels:
       - "com.centurylinklabs.watchtower.enable=true"
     env_file:
       - .env
@@ -65,3 +68,11 @@ services:
 
 volumes:
   model-cache:
+
+
+networks:
+  default:
+    name: immich
+  cloudflare:
+    name: cloudflare_tunnel
+    external: true

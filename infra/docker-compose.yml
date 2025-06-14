@@ -26,7 +26,7 @@ services:
   tailscale:
     container_name: tailscale
     image: tailscale/tailscale:latest
-    hostname: ${HOSTNAME}
+    hostname: ${TS_HOSTNAME}
     network_mode: host
     environment:
       - TS_AUTHKEY=${TS_AUTHKEY}
@@ -40,6 +40,39 @@ services:
       - SYS_MODULE
     restart: unless-stopped
 
+  cloudflare-tunnel:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflare-tunnel
+    hostname: cloudflare-tunnel
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run
+    networks:
+      - cloudflare
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "10"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      # - ./config/hosts:/etc/hosts
+    environment:
+      - "TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}"
+    # healthcheck:
+    #   test: [ "CMD", "cloudflared", "--version" ]
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 3
+    #   start_period: 10s
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
 volumes:
   ts-authkey:
     driver: local
+
+networks:
+  default:
+  cloudflare:
+    name: cloudflare_tunnel
+    driver: bridge
