@@ -25,7 +25,7 @@ services:
 
   tailscale:
     container_name: tailscale
-    image: tailscale/tailscale:latest
+    image: ghcr.io/tailscale/tailscale:latest
     hostname: ${TS_HOSTNAME}
     network_mode: host
     environment:
