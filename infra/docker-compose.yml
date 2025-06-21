@@ -39,11 +39,12 @@ services:
       - NET_ADMIN
       - SYS_MODULE
     restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
 
   cloudflare-tunnel:
-    image: cloudflare/cloudflared:latest
+    image: docker.io/cloudflare/cloudflared:latest
     container_name: cloudflare-tunnel
-    hostname: cloudflare-tunnel
     restart: unless-stopped
     command: tunnel --no-autoupdate run
     networks:
@@ -58,14 +59,19 @@ services:
       # - ./config/hosts:/etc/hosts
     environment:
       - "TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}"
-    # healthcheck:
-    #   test: [ "CMD", "cloudflared", "--version" ]
-    #   interval: 30s
-    #   timeout: 10s
-    #   retries: 3
-    #   start_period: 10s
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
+
+  # beszel:
+  #   image: henrygd/beszel
+  #   container_name: beszel
+  #   restart: unless-stopped
+  #   ports:
+  #     - 8090:8090
+  #   volumes:
+  #     - ./beszel_data:/beszel_data
+  #   labels:
+  #     - "com.centurylinklabs.watchtower.enable=true"
 
 volumes:
   ts-authkey:
@@ -73,6 +79,8 @@ volumes:
 
 networks:
   default:
+    name: infra
+    driver: bridge
   cloudflare:
     name: cloudflare_tunnel
     driver: bridge

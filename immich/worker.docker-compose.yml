@@ -1,0 +1,46 @@
+name: immich-worker
+
+services:
+  immich-microservices:
+    container_name: immich_microservices
+    image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
+    environment:
+      IMMICH_WORKERS_EXCLUDE: "api"
+    volumes:
+      - ${WORKER_UPLOAD_LOCATION}:/usr/src/app/upload
+      - /etc/localtime:/etc/localtime:ro
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    env_file:
+      - .env
+      - .env.worker
+    extends:
+      file: worker.hwaccel.transcoding.yml # see https://immich.app/docs/features/hardware-transcoding
+      service: vaapi # set to one of [cpu, nvenc, quicksync, rkmpp, vaapi, vaapi-wsl] for accelerated transcoding
+    # restart: always
+    healthcheck:
+      disable: false
+
+  immich-machine-learning:
+    container_name: immich-ml
+    # For hardware acceleration, add one of -[armnn, cuda, rocm, openvino, rknn] to the image tag.
+    # Example tag: ${IMMICH_VERSION:-release}-cuda
+    image: ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION:-release}-openvino
+    extends:
+      file: worker.hwaccel.ml.yml # see https://immich.app/docs/features/ml-hardware-acceleration
+      service: openvino # set to one of [cpu, armnn, cuda, rocm, openvino, openvino-wsl, rknn] for accelerated inference - use the `-wsl` version for WSL2 where applicable
+    volumes:
+      - worker-model-cache:/cache
+    env_file:
+      - .env
+      - .env.worker
+    # restart: always
+    healthcheck:
+      disable: false
+
+volumes:
+  worker-model-cache:
+
+networks:
+  default:
+    name: immich_worker
