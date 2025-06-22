@@ -51,6 +51,8 @@ services:
     healthcheck:
       test: redis-cli ping || exit 1
     restart: always
+    ports:
+      - 127.0.0.1:6379:6379
     labels:
       tsdproxy.enable: "true"
       tsdproxy.name: "immich-redis"
