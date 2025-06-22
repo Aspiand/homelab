@@ -62,6 +62,21 @@ services:
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
 
+  tsdproxy:
+    image: almeidapaulopt/tsdproxy:1
+    container_name: tsdproxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - tsdproxy-data:/data
+      - ./config:/config
+    environment:
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    env_file:
+      - .env
+    ports:
+      - 8080:8080
+    restart: unless-stopped
+
   # beszel:
   #   image: henrygd/beszel
   #   container_name: beszel
@@ -75,7 +90,7 @@ services:
 
 volumes:
   ts-authkey:
-    driver: local
+  tsdproxy-data:
 
 networks:
   default:

@@ -51,6 +51,10 @@ services:
     healthcheck:
       test: redis-cli ping || exit 1
     restart: always
+    labels:
+      tsdproxy.enable: "true"
+      tsdproxy.name: "immich-redis"
+      tsdproxy.container_port: 6379
 
   database:
     container_name: immich_postgres
@@ -65,6 +69,10 @@ services:
     volumes:
       - ${DB_DATA_LOCATION}:/var/lib/postgresql/data
     restart: always
+    labels:
+      tsdproxy.enable: "true"
+      tsdproxy.name: "immich-postgres"
+      tsdproxy.container_port: 5432
 
 volumes:
   model-cache:
