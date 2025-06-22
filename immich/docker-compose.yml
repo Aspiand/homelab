@@ -26,7 +26,7 @@ services:
       disable: false
     labels:
       tsdproxy.enable: "true"
-      tsdproxy.name: "immich"
+      tsdproxy.name: "gallery"
       tsdproxy.container_port: 2283
       com.centurylinklabs.watchtower.enable: true
 
