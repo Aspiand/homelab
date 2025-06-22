@@ -13,8 +13,6 @@ services:
     networks:
       - default
       - cloudflare
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
     env_file:
       - .env
     ports:
@@ -26,6 +24,11 @@ services:
     restart: always
     healthcheck:
       disable: false
+    labels:
+      tsdproxy.enable: "true"
+      tsdproxy.name: "immich"
+      tsdproxy.container_port: 2283
+      com.centurylinklabs.watchtower.enable: true
 
   immich-machine-learning:
     container_name: immich_machine_learning
@@ -51,12 +54,9 @@ services:
     healthcheck:
       test: redis-cli ping || exit 1
     restart: always
+    command: redis-server --bind 127.0.0.1 100.1.1.0 # tailscale subnet
     ports:
-      - 127.0.0.1:6379:6379
-    labels:
-      tsdproxy.enable: "true"
-      tsdproxy.name: "immich-redis"
-      tsdproxy.container_port: 6379
+      - 6379:6379
 
   database:
     container_name: immich_postgres
@@ -71,10 +71,6 @@ services:
     volumes:
       - ${DB_DATA_LOCATION}:/var/lib/postgresql/data
     restart: always
-    labels:
-      tsdproxy.enable: "true"
-      tsdproxy.name: "immich-postgres"
-      tsdproxy.container_port: 5432
 
 volumes:
   model-cache:
