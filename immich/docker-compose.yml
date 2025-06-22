@@ -54,7 +54,6 @@ services:
     healthcheck:
       test: redis-cli ping || exit 1
     restart: always
-    command: redis-server --bind 127.0.0.1 100.1.1.0 # tailscale subnet
     ports:
       - 6379:6379
 
@@ -71,6 +70,8 @@ services:
     volumes:
       - ${DB_DATA_LOCATION}:/var/lib/postgresql/data
     restart: always
+    ports:
+      - 5432:5432
 
 volumes:
   model-cache:
