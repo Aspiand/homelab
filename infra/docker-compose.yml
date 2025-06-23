@@ -87,7 +87,10 @@ services:
       - ./beszel_data:/beszel_data
       - ./beszel_socket:/beszel_socket
     labels:
-      - "com.centurylinklabs.watchtower.enable=true"
+      tsdproxy.enable: "true"
+      tsdproxy.name: "beszel"
+      tsdproxy.container_port: 8090
+      com.centurylinklabs.watchtower.enable: true
 
   beszel-agent:
     image: henrygd/beszel-agent:latest
