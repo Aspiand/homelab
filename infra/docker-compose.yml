@@ -100,6 +100,8 @@ services:
     environment:
       LISTEN: /beszel_socket/beszel.sock
       KEY: '${BESZEL_KEY}' # Do not remove quotes around the key
+    depends_on:
+      - beszel
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
 
