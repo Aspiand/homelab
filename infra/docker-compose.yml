@@ -77,16 +77,31 @@ services:
       - 8080:8080
     restart: unless-stopped
 
-  # beszel:
-  #   image: henrygd/beszel
-  #   container_name: beszel
-  #   restart: unless-stopped
-  #   ports:
-  #     - 8090:8090
-  #   volumes:
-  #     - ./beszel_data:/beszel_data
-  #   labels:
-  #     - "com.centurylinklabs.watchtower.enable=true"
+  beszel:
+    image: henrygd/beszel:latest
+    container_name: beszel
+    restart: unless-stopped
+    ports:
+      - 8090:8090
+    volumes:
+      - ./beszel_data:/beszel_data
+      - ./beszel_socket:/beszel_socket
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  beszel-agent:
+    image: henrygd/beszel-agent:latest
+    container_name: beszel-agent
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ./beszel_socket:/beszel_socket
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      LISTEN: /beszel_socket/beszel.sock
+      KEY: '${BESZEL_KEY}' # Do not remove quotes around the key
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
 
 volumes:
   ts-authkey:
