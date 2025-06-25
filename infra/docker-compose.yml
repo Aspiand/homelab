@@ -42,6 +42,25 @@ services:
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
 
+  tsdproxy:
+    image: almeidapaulopt/tsdproxy:1
+    container_name: tsdproxy
+    depends_on:
+      - tailscale
+    networks:
+      - tsdproxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - tsdproxy-data:/data
+      - ./config:/config
+    environment:
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    env_file:
+      - .env
+    ports:
+      - 8080:8080
+    restart: unless-stopped
+
   cloudflare-tunnel:
     image: docker.io/cloudflare/cloudflared:latest
     container_name: cloudflare-tunnel
@@ -62,27 +81,14 @@ services:
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
 
-  tsdproxy:
-    image: almeidapaulopt/tsdproxy:1
-    container_name: tsdproxy
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - tsdproxy-data:/data
-      - ./config:/config
-    environment:
-      - DOCKER_HOST=unix:///var/run/docker.sock
-    env_file:
-      - .env
-    ports:
-      - 8080:8080
-    restart: unless-stopped
-
   beszel:
     image: henrygd/beszel:latest
     container_name: beszel
     restart: unless-stopped
-    ports:
-      - 8090:8090
+    # ports:
+    #   - 8090:8090
+    networks:
+      - tsdproxy
     volumes:
       - ./beszel_data:/beszel_data
       - ./beszel_socket:/beszel_socket
@@ -118,4 +124,7 @@ networks:
     driver: bridge
   cloudflare:
     name: cloudflare_tunnel
+    driver: bridge
+  tsdproxy:
+    name: tsdproxy
     driver: bridge

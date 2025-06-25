@@ -13,10 +13,11 @@ services:
     networks:
       - default
       - cloudflare
+      - tsdproxy
     env_file:
       - .env
-    ports:
-      - '2283:2283'
+    # ports:
+    #   - '2283:2283'
       # - '127.0.0.1:2283:2283'
     depends_on:
       - redis
@@ -81,4 +82,7 @@ networks:
     name: immich
   cloudflare:
     name: cloudflare_tunnel
+    external: true
+  tsdproxy:
+    name: tsdproxy
     external: true
