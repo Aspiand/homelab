@@ -11,18 +11,6 @@ services:
   #     - .env
   #   command: --label-enable --cleanup
 
-  # npm:
-  #   container_name: nginx-proxy-manager
-  #   image: 'docker.io/jc21/nginx-proxy-manager:latest'
-  #   restart: unless-stopped
-  #   ports:
-  #     - '80:80'
-  #     - '81:81'
-  #     - '443:443'
-  #   volumes:
-  #     - ./data:/data
-  #     - ./letsencrypt:/etc/letsencrypt
-
   tailscale:
     container_name: tailscale
     image: ghcr.io/tailscale/tailscale:latest
@@ -51,8 +39,8 @@ services:
       - tsdproxy
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - tsdproxy-data:/data
       - ./config:/config
+      - tsdproxy-data:/data
     environment:
       - DOCKER_HOST=unix:///var/run/docker.sock
     env_file:
