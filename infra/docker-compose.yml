@@ -28,13 +28,11 @@ services:
       - SYS_MODULE
     restart: unless-stopped
     labels:
-      - "com.centurylinklabs.watchtower.enable=true"
+      com.centurylinklabs.watchtower.enable: true
 
   tsdproxy:
     image: almeidapaulopt/tsdproxy:1
     container_name: tsdproxy
-    depends_on:
-      - tailscale
     networks:
       - tsdproxy
     volumes:
@@ -45,8 +43,8 @@ services:
       - DOCKER_HOST=unix:///var/run/docker.sock
     env_file:
       - .env
-    ports:
-      - 8080:8080
+    # ports:
+    #   - 8080:8080
     restart: unless-stopped
 
   cloudflare-tunnel:
@@ -67,7 +65,7 @@ services:
     environment:
       - "TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}"
     labels:
-      - "com.centurylinklabs.watchtower.enable=true"
+      com.centurylinklabs.watchtower.enable: true
 
   beszel:
     image: henrygd/beszel:latest
@@ -83,7 +81,6 @@ services:
     labels:
       tsdproxy.enable: "true"
       tsdproxy.name: "beszel"
-      tsdproxy.container_port: 8090
       com.centurylinklabs.watchtower.enable: true
 
   beszel-agent:
@@ -100,7 +97,7 @@ services:
     depends_on:
       - beszel
     labels:
-      - "com.centurylinklabs.watchtower.enable=true"
+      com.centurylinklabs.watchtower.enable: true
 
 volumes:
   ts-authkey:

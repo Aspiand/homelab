@@ -10,7 +10,7 @@ services:
       - ${WORKER_UPLOAD_LOCATION}:/usr/src/app/upload
       - /etc/localtime:/etc/localtime:ro
     labels:
-      - "com.centurylinklabs.watchtower.enable=true"
+      com.centurylinklabs.watchtower.enable: true
     env_file:
       - .env
       - .env.worker

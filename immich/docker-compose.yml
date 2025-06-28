@@ -42,7 +42,7 @@ services:
     volumes:
       - model-cache:/cache
     labels:
-      - "com.centurylinklabs.watchtower.enable=true"
+      com.centurylinklabs.watchtower.enable: true
     env_file:
       - .env
     restart: always
