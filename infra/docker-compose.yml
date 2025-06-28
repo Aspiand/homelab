@@ -1,15 +1,39 @@
 name: infra
 
 services:
-  # watchtower:
-  #   container_name: watchtower
-  #   image: containrrr/watchtower
-  #   volumes:
-  #     - /var/run/docker.sock:/var/run/docker.sock
-  #     - /etc/localtime:/etc/localtime:ro
-  #   env_file:
-  #     - .env
-  #   command: --label-enable --cleanup
+  watchtower:
+    container_name: watchtower
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/localtime:/etc/localtime:ro
+    env_file:
+      - .env
+    environment:
+      WATCHTOWER_CLEANUP: true
+      WATCHTOWER_LABEL_ENABLE: true
+      WATCHTOWER_SCHEDULE: 0 0 2 * * *
+      WATCHTOWER_NOTIFICATION_REPORT: "true"
+      WATCHTOWER_NOTIFICATION_TEMPLATE: |
+        {{- if .Report -}}
+          {{- with .Report -}}
+        {{len .Scanned}} Scanned, {{len .Updated}} Updated, {{len .Failed}} Failed
+              {{- range .Updated}}
+        - {{.Name}} ({{.ImageName}}): {{.CurrentImageID.ShortID}} updated to {{.LatestImageID.ShortID}}
+              {{- end -}}
+              {{- range .Fresh}}
+        - {{.Name}} ({{.ImageName}}): {{.State}}
+            {{- end -}}
+            {{- range .Skipped}}
+        - {{.Name}} ({{.ImageName}}): {{.State}}: {{.Error}}
+            {{- end -}}
+            {{- range .Failed}}
+        - {{.Name}} ({{.ImageName}}): {{.State}}: {{.Error}}
+            {{- end -}}
+          {{- end -}}
+        {{- else -}}
+          {{range .Entries -}}{{.Message}}{{"\n"}}{{- end -}}
+        {{- end -}}
 
   tailscale:
     container_name: tailscale
@@ -17,9 +41,9 @@ services:
     hostname: ${TS_HOSTNAME}
     network_mode: host
     environment:
-      - TS_AUTHKEY=${TS_AUTHKEY}
-      - TS_STATE_DIR=/var/lib/tailscale
-      - TS_USERSPACE=false
+      TS_AUTHKE: =${TS_AUTHKEY}
+      TS_STATE_DI: =/var/lib/tailscale
+      TS_USERSPAC: =false
     volumes:
       - ts-authkey:/var/lib/tailscale
       - /dev/net/tun:/dev/net/tun
@@ -40,7 +64,7 @@ services:
       - ./config:/config
       - tsdproxy-data:/data
     environment:
-      - DOCKER_HOST=unix:///var/run/docker.sock
+      DOCKER_HOST: unix:///var/run/docker.sock
     env_file:
       - .env
     # ports:
@@ -63,7 +87,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       # - ./config/hosts:/etc/hosts
     environment:
-      - "TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}"
+      TUNNEL_TOKEN: ${CLOUDFLARE_TUNNEL_TOKEN}
     labels:
       com.centurylinklabs.watchtower.enable: true
 

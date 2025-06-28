@@ -30,6 +30,8 @@ services:
       tsdproxy.name: "gallery"
       tsdproxy.container_port: 2283
       com.centurylinklabs.watchtower.enable: true
+      com.centurylinklabs.watchtower.monitor-only: true
+      com.centurylinklabs.watchtower.depends-on: "immich_redis,immich_postgres"
 
   immich-machine-learning:
     container_name: immich_machine_learning
@@ -41,13 +43,14 @@ services:
     #   service: cpu # set to one of [armnn, cuda, rocm, openvino, openvino-wsl, rknn] for accelerated inference - use the `-wsl` version for WSL2 where applicable
     volumes:
       - model-cache:/cache
-    labels:
-      com.centurylinklabs.watchtower.enable: true
     env_file:
       - .env
     restart: always
     healthcheck:
       disable: false
+    labels:
+      com.centurylinklabs.watchtower.enable: true
+      com.centurylinklabs.watchtower.monitor-only: true
 
   redis:
     container_name: immich_redis
@@ -55,8 +58,6 @@ services:
     healthcheck:
       test: redis-cli ping || exit 1
     restart: always
-    ports:
-      - 6379:6379
 
   database:
     container_name: immich_postgres
@@ -71,8 +72,6 @@ services:
     volumes:
       - ${DB_DATA_LOCATION}:/var/lib/postgresql/data
     restart: always
-    ports:
-      - 5432:5432
 
 volumes:
   model-cache:
