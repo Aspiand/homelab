@@ -113,6 +113,7 @@ services:
     restart: unless-stopped
     network_mode: host
     volumes:
+      - /mnt/hz128/.beszel:/extra-filesystems/hz128:ro
       - ./beszel_socket:/beszel_socket
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
