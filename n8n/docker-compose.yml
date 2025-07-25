@@ -6,6 +6,9 @@ services:
     image: docker.n8n.io/n8nio/n8n
     ports:
       - 5678:5678
+    networks:
+      - default
+      - tsdproxy
     volumes:
       - storage:/home/node/.n8n
       - ./local-files:/files
@@ -13,12 +16,12 @@ services:
       - .env
     restart: unless-stopped
     environment:
-      N8N_HOST: ${DOMAIN_NAME}
       N8N_PORT: 5678
       N8N_PROTOCOL: https
-      WEBHOOK_URL: https://${DOMAIN_NAME}
+      # WEBHOOK_URL: https://${DOMAIN_NAME}
       DB_TYPE: sqlite
-      DB_TABLE_PREFIX: n8n
+      # DB_TABLE_PREFIX: n8n
+      N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS: true
     labels:
       tsdproxy.enable: "true"
       tsdproxy.name: "n8n"
@@ -32,3 +35,6 @@ volumes:
 networks:
   default:
     name: n8n
+  tsdproxy:
+    name: tsdproxy
+    external: true
