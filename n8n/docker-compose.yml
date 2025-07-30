@@ -24,9 +24,6 @@ services:
       # DB_TABLE_PREFIX: n8n_
       WEBHOOK_URL: https://${N8N_HOST}
     labels:
-      # tsdproxy.enable: "true"
-      # tsdproxy.name: "n8n"
-      # tsdproxy.container_port: 5678
       com.centurylinklabs.watchtower.enable: true
 
 volumes:
