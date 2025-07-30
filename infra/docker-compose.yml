@@ -4,6 +4,7 @@ services:
   watchtower:
     container_name: watchtower
     image: containrrr/watchtower
+    restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/localtime:/etc/localtime:ro
@@ -40,6 +41,7 @@ services:
     image: ghcr.io/tailscale/tailscale:latest
     hostname: ${TS_HOSTNAME}
     network_mode: host
+    restart: always
     environment:
       TS_AUTHKEY: ${TS_AUTHKEY}
       TS_STATE_DIR: /var/lib/tailscale
@@ -50,13 +52,13 @@ services:
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
-    restart: unless-stopped
     labels:
       com.centurylinklabs.watchtower.enable: true
 
   tsdproxy:
     image: almeidapaulopt/tsdproxy:1
     container_name: tsdproxy
+    restart: unless-stopped
     networks:
       - tsdproxy
     volumes:
@@ -69,7 +71,6 @@ services:
       - .env
     # ports:
     #   - 8080:8080
-    restart: unless-stopped
 
   cloudflare-tunnel:
     image: docker.io/cloudflare/cloudflared:latest
