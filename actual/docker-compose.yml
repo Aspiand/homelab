@@ -13,6 +13,8 @@ services:
       - ${ACTUAL_DATA_DIR}:/data
     # ports:
     #   - '5006:5006'
+    env_file:
+      - .env
     healthcheck:
       # Enable health check for the instance
       test: [ 'CMD-SHELL', 'node src/scripts/health-check.js' ]
