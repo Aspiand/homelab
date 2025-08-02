@@ -101,7 +101,7 @@ services:
     networks:
       - tsdproxy
     volumes:
-      - ./beszel_data:/beszel_data
+      - ${BESZEL_DATA_DIR}:/beszel_data
       - ./beszel_socket:/beszel_socket
     labels:
       tsdproxy.enable: "true"
