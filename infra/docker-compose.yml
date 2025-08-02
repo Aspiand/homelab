@@ -87,8 +87,6 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       # - ./config/hosts:/etc/hosts
-    env_file:
-      - .env
     environment:
       TUNNEL_TOKEN: ${CLOUDFLARE_TUNNEL_TOKEN}
     labels:
@@ -124,8 +122,6 @@ services:
       KEY: '${BESZEL_KEY}' # Do not remove quotes around the key
     depends_on:
       - beszel
-    env_file:
-      - .env
     labels:
       com.centurylinklabs.watchtower.enable: true
 
