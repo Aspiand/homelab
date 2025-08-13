@@ -23,6 +23,7 @@ services:
       DB_TYPE: sqlite
       # DB_TABLE_PREFIX: n8n_
       WEBHOOK_URL: https://${N8N_HOST}
+      EXPRESS_TRUST_PROXY: true
     labels:
       com.centurylinklabs.watchtower.enable: true
 
