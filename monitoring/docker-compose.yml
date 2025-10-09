@@ -24,6 +24,7 @@ services:
       - ./beszel_socket:/beszel_socket
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /mnt/hz128/.beszel:/extra-filesystems/hz128:ro
+      - /mnt/rx128/.beszel:/extra-filesystems/rx128:ro
     environment:
       LISTEN: /beszel_socket/beszel.sock
       KEY: '${BESZEL_KEY}' # Do not remove quotes around the key
