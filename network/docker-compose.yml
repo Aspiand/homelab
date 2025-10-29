@@ -36,24 +36,24 @@ services:
           {{range .Entries -}}{{.Message}}{{"\n"}}{{- end -}}
         {{- end -}}
 
-  tailscale:
-    container_name: tailscale
-    image: ghcr.io/tailscale/tailscale:latest
-    hostname: ${TS_HOSTNAME}
-    network_mode: host
-    restart: always
-    environment:
-      TS_AUTHKEY: ${TS_AUTHKEY}
-      TS_STATE_DIR: /var/lib/tailscale
-      TS_USERSPACE: false
-    volumes:
-      - ts-authkey:/var/lib/tailscale
-      - /dev/net/tun:/dev/net/tun
-    cap_add:
-      - NET_ADMIN
-      - SYS_MODULE
-    labels:
-      com.centurylinklabs.watchtower.enable: true
+#  tailscale:
+#    container_name: tailscale
+#    image: ghcr.io/tailscale/tailscale:latest
+#    hostname: ${TS_HOSTNAME}
+#    network_mode: host
+#    restart: always
+#    environment:
+#      TS_AUTHKEY: ${TS_AUTHKEY}
+#      TS_STATE_DIR: /var/lib/tailscale
+#      TS_USERSPACE: false
+#    volumes:
+#      - ts-authkey:/var/lib/tailscale
+#      - /dev/net/tun:/dev/net/tun
+#    cap_add:
+#     - NET_ADMIN
+#     - SYS_MODULE
+#    labels:
+#      com.centurylinklabs.watchtower.enable: true
 
   tsdproxy:
     image: almeidapaulopt/tsdproxy:1
