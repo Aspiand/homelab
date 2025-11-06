@@ -1,31 +1,12 @@
 services:
   git:
-    image: codeberg.org/forgejo/forgejo:12
-    container_name: forgejo
-    restart: always
-    environment:
-      USER_UID: 1000
-      USER_GID: 1000
-      GOMAXPROCS: 1
-      GOMEMLIMIT: 128MiB
-    networks:
-      - default
-      - cloudflare
+    image: charmcli/soft-serve:latest
+    container_name: soft-serve
     volumes:
-      - ${DATA_DIR:-./forgejo}:/data
-      - /etc/timezone:/etc/timezone:ro
-      - /etc/localtime:/etc/localtime:ro
+      - ./data:/soft-serve
     ports:
-      - 3000:3000
-      - 22222:22
-    labels:
-      com.centurylinklabs.watchtower.enable: true
-      tsdproxy.enable: "true"
-      tsdproxy.name: "git"
-
-networks:
-  default:
-    name: git
-  cloudflare:
-    name: cloudflare_tunnel
-    external: true
+      - 23231:23231
+      - 23232:23232
+      - 23233:23233
+      - 9418:9418
+    restart: on-failure
