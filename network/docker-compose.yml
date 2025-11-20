@@ -11,6 +11,7 @@ services:
     env_file:
       - .env
     environment:
+      DOCKER_API_VERSION: "1.52"
       WATCHTOWER_CLEANUP: true
       WATCHTOWER_LABEL_ENABLE: true
       WATCHTOWER_SCHEDULE: 0 0 2 * * *
