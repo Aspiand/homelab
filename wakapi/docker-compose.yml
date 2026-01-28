@@ -2,13 +2,18 @@ services:
   wakapi:
     init: true
     image: ghcr.io/muety/wakapi:latest
+    container_name: wakapi
     restart: unless-stopped
-    # ports:
-    #   - 3000:3000
+    ports:
+      - 3000:3000
     volumes:
       - ${DATA_DIR}:/data
     environment:
       WAKAPI_PASSWORD_SALT_FILE: "/run/secrets/password_salt"
+    networks:
+      - cloudflare
+    labels:
+      com.centurylinklabs.watchtower.enable: true
     secrets:
       - source: password_salt
         target: password_salt
@@ -19,3 +24,8 @@ services:
 secrets:
   password_salt:
     environment: WAKAPI_PASSWORD_SALT
+
+networks:
+  cloudflare:
+    name: cloudflare_tunnel
+    external: true
