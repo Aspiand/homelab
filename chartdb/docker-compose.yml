@@ -1,5 +1,4 @@
-name: database
-
+name: chartdb
 services:
   chartdb:
     container_name: chartdb
@@ -9,8 +8,6 @@ services:
       - cloudflare
     labels:
       com.centurylinklabs.watchtower.enable: true
-
-
 networks:
   default:
   cloudflare:
