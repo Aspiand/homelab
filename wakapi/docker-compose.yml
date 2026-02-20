@@ -7,12 +7,15 @@ services:
     ports:
       - 3000:3000
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - ${DATA_DIR}:/data
     environment:
       WAKAPI_PASSWORD_SALT_FILE: "/run/secrets/password_salt"
     networks:
       - cloudflare
     labels:
+      tsdproxy.enable: "true"
+      tsdproxy.name: "wakapi"
       com.centurylinklabs.watchtower.enable: true
     secrets:
       - source: password_salt
@@ -26,6 +29,10 @@ secrets:
     environment: WAKAPI_PASSWORD_SALT
 
 networks:
+  default:
   cloudflare:
     name: cloudflare_tunnel
+    external: true
+  tsdproxy:
+    name: tsdproxy
     external: true
