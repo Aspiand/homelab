@@ -1,0 +1,70 @@
+name: networks
+
+services:
+  # tailscale:
+  #   container_name: tailscale
+  #   image: ghcr.io/tailscale/tailscale:latest
+  #   hostname: ${TS_HOSTNAME}
+  #   network_mode: host
+  #   restart: always
+  #   environment:
+  #     TS_AUTHKEY: ${TS_AUTHKEY}
+  #     TS_STATE_DIR: /var/lib/tailscale
+  #     TS_USERSPACE: false
+  #   volumes:
+  #     - ts-authkey:/var/lib/tailscale
+  #     - /dev/net/tun:/dev/net/tun
+  #   cap_add:
+  #    - NET_ADMIN
+  #    - SYS_MODULE
+  #   labels:
+  #     com.centurylinklabs.watchtower.enable: true
+
+  tsdproxy:
+    image: almeidapaulopt/tsdproxy:1
+    container_name: tsdproxy
+    restart: unless-stopped
+    networks:
+      - tsdproxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./config:/config
+      - tsdproxy-data:/data
+    environment:
+      DOCKER_HOST: unix:///var/run/docker.sock
+    env_file:
+      - .env
+    # ports:
+    #   - 8080:8080
+
+  cloudflare-tunnel:
+    image: docker.io/cloudflare/cloudflared:latest
+    container_name: cloudflare-tunnel
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run
+    networks:
+      - cloudflare
+    logging:
+      driver: json-file
+      options:
+        max-size: 100m
+        max-file: "10"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      # - ./config/hosts:/etc/hosts
+    environment:
+      TUNNEL_TOKEN: ${CLOUDFLARE_TUNNEL_TOKEN}
+    labels:
+      com.centurylinklabs.watchtower.enable: true
+
+volumes:
+  ts-authkey: null
+  tsdproxy-data: null
+
+networks:
+  cloudflare:
+    name: cloudflare_tunnel
+    driver: bridge
+  tsdproxy:
+    name: tsdproxy
+    driver: bridge

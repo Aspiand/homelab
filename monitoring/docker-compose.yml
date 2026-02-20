@@ -12,9 +12,8 @@ services:
       - ./beszel_socket:/beszel_socket
     labels:
       tsdproxy.enable: "true"
-      tsdproxy.name: "beszel"
+      tsdproxy.name: beszel
       com.centurylinklabs.watchtower.enable: true
-
   beszel-agent:
     image: henrygd/beszel-agent:latest
     container_name: beszel-agent
