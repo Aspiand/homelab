@@ -27,3 +27,6 @@ networks:
   cloudflare:
     name: cloudflare_tunnel
     external: true
+x-dockge:
+  urls:
+    - https://budget.aspian.my.id/

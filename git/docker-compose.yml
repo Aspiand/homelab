@@ -3,19 +3,19 @@ services:
     image: charmcli/soft-serve:latest
     container_name: soft-serve
     volumes:
-      - ./data:/soft-serve
-      # - /mnt/hz128/data/soft-serve:/soft-serve
+      # - ./data:/soft-serve
+      - /srv/soft-serve:/soft-serve
+      - /etc/localtime:/etc/localtime
     ports:
-      - 127.0.0.1:23231:23231
-      - 127.0.0.1:23232:23232
-      - 127.0.0.1:23233:23233
-      - 127.0.0.1:9418:9418
-    restart: on-failure
-    environment:
-      SOFT_SERVE_INITIAL_ADMIN_KEYS:
+      - 23231:23231
+      - 23232:23232
+      - 23233:23233
+      - 9418:9418
+    restart: always
+    # environment:
+    #   SOFT_SERVE_INITIAL_ADMIN_KEYS:
     labels:
       com.centurylinklabs.watchtower.enable: true
-
 networks:
   default:
     name: git

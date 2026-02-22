@@ -13,3 +13,6 @@ networks:
   cloudflare:
     name: cloudflare_tunnel
     external: true
+x-dockge:
+  urls:
+    - https://diagram.aspian.my.id/

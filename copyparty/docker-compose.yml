@@ -3,10 +3,9 @@ services:
     container_name: copyparty
     image: ghcr.io/9001/copyparty-ac:latest
     user: "1000:1000"
+    restart: on-failure
     ports:
       - 3923:3923
     volumes:
-      - /mnt:/mnt
       - ./copyparty.conf:/cfg/copyparty.conf
-      - ./example-copyparty.conf:/cfg/example-copyparty.conf
-      
+      - /mnt/copyparty:/data

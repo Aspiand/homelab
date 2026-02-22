@@ -25,9 +25,8 @@ services:
       - tsdproxy
     labels:
       tsdproxy.enable: "true"
-      tsdproxy.name: "dockge"
+      tsdproxy.name: dockge
       com.centurylinklabs.watchtower.enable: true
-
 networks:
   default:
     name: dockge
