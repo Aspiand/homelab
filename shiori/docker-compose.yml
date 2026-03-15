@@ -1,0 +1,9 @@
+services:
+  shiori:
+    container_name: shiori
+    image: ghcr.io/go-shiori/shiori
+    restart: always
+    ports:
+      - 8001:8080
+    volumes:
+      - /srv/shiori:/shiori
