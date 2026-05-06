@@ -7,3 +7,11 @@ services:
       - 8001:8080
     volumes:
       - /srv/shiori:/shiori
+    networks:
+      - tsdproxy
+    labels:
+      tsdproxy.enable: true
+      tsdproxy.name: bookmark
+networks:
+  tsdproxy:
+    external: true
