@@ -14,7 +14,7 @@ services:
       # - ${DATA_DIR}/rclone:/root/.config/rclone # Mount for rclone config (needed when using rclone remotes)
       # - /path/to/backup/data:/userdata  # Mount local paths to backup
       # - /path/to/local/repos:/repos     # Mount local repos (optional for remote storage)
-      - /mnt/adata_su650/data/immich:/userdata/immich
+      - /mnt/adata_su650/data/immich:/userdata/immich:ro
     environment:
       - BACKREST_DATA=/data
       - BACKREST_CONFIG=/config/config.json
@@ -22,4 +22,7 @@ services:
       - TMPDIR=/tmp
     ports:
       - 9898:9898
+    labels:
+      tsdproxy.enable: true
+      tsdproxy.name: backrest-alef
 networks: {}
