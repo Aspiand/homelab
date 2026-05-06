@@ -1,0 +1,21 @@
+name: beszel-agent
+
+services:
+  beszel-agent:
+    image: henrygd/beszel-agent:latest
+    container_name: beszel-agent
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /srv/beszel_agent:/var/lib/beszel-agent
+
+      # monitor other disks / partitions by mounting a folder in /extra-filesystems
+      - /mnt/adata_su650/.beszel:/extra-filesystems/adata_su650:ro
+    environment:
+      LISTEN: 45876
+      KEY: '${BESZEL_SSH_KEY}' # Do not remove quotes around the key
+      HUB_URL: ${BESZEL_URL}
+      TOKEN: ${BESZEL_TOKEN}
+    labels:
+      com.centurylinklabs.watchtower.enable: true

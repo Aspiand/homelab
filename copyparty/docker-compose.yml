@@ -1,3 +1,5 @@
+name: copyparty
+
 services:
   copyparty:
     container_name: copyparty
@@ -9,3 +11,5 @@ services:
     volumes:
       - ./copyparty.conf:/cfg/copyparty.conf
       - /mnt/copyparty:/data
+    labels:
+      com.centurylinklabs.watchtower.enable: true

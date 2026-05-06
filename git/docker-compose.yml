@@ -1,9 +1,10 @@
+name: soft-serve
+
 services:
   git:
     image: charmcli/soft-serve:latest
     container_name: soft-serve
     volumes:
-      # - ./data:/soft-serve
       - /srv/soft-serve:/soft-serve
       - /etc/localtime:/etc/localtime
     ports:
@@ -16,6 +17,7 @@ services:
     #   SOFT_SERVE_INITIAL_ADMIN_KEYS:
     labels:
       com.centurylinklabs.watchtower.enable: true
+
 networks:
   default:
     name: git

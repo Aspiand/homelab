@@ -1,4 +1,5 @@
 name: chartdb
+
 services:
   chartdb:
     container_name: chartdb
@@ -8,11 +9,12 @@ services:
       - cloudflare
     labels:
       com.centurylinklabs.watchtower.enable: true
+      zero-tunnel.enable: true
+      zero-tunnel.subdomain: diagram
+      zero-tunnel.port: 80
+
 networks:
   default:
   cloudflare:
     name: cloudflare_tunnel
     external: true
-x-dockge:
-  urls:
-    - https://diagram.aspian.my.id/

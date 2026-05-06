@@ -1,15 +1,17 @@
+name: support
+
 services:
+
   watchtower:
     container_name: watchtower
     image: docker.io/nickfedor/watchtower
     restart: unless-stopped
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
       - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     env_file:
       - .env
     environment:
-      # DOCKER_API_VERSION: "1.52"
       WATCHTOWER_CLEANUP: true
       WATCHTOWER_LABEL_ENABLE: true
       WATCHTOWER_SCHEDULE: 0 0 2 * * *

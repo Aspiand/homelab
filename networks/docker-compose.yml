@@ -27,13 +27,12 @@ services:
     networks:
       - tsdproxy
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./config:/config
       - tsdproxy-data:/data
     environment:
       DOCKER_HOST: unix:///var/run/docker.sock
-    env_file:
-      - .env
+      TSDPROXY_AUTHKEY: ${TSDPROXY_AUTHKEY}
     # ports:
     #   - 8080:8080
 
@@ -57,14 +56,28 @@ services:
     labels:
       com.centurylinklabs.watchtower.enable: true
 
+  zero-tunnel:
+    container_name: zero-tunnel
+    image: ghcr.io/aspiand/zero-tunnel:dev
+    restart: unless-stopped
+    environment:
+      ZERO_TUNNEL_DEFAULT_DOMAIN: aspian.my.id
+      ZERO_TUNNEL_INTERVAL: 300s
+    env_file: .env
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    labels:
+      com.centurylinklabs.watchtower.enable: true
+
 volumes:
-  ts-authkey: null
-  tsdproxy-data: null
+  ts-authkey:
+  tsdproxy-data:
 
 networks:
   cloudflare:
     name: cloudflare_tunnel
     driver: bridge
+
   tsdproxy:
     name: tsdproxy
     driver: bridge

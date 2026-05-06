@@ -1,4 +1,5 @@
-version: "3.7"
+name: speedtest
+
 services:
   speedtest:
     container_name: speedtest
@@ -6,13 +7,14 @@ services:
     restart: always
     environment:
       MODE: standalone
+    ports:
+      - 8080:8080
     networks:
       - tsdproxy
     labels:
       tsdproxy.enable: true
       tsdproxy.name: speedtest
-    ports:
-      - 8080:8080
+
 networks:
   tsdproxy:
     external: true

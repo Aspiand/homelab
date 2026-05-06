@@ -1,8 +1,10 @@
+name: wakapi
+
 services:
   wakapi:
-    init: true
-    image: ghcr.io/muety/wakapi:latest
     container_name: wakapi
+    image: ghcr.io/muety/wakapi:latest
+    init: true
     restart: unless-stopped
     ports:
       - 3000:3000
@@ -13,10 +15,14 @@ services:
       WAKAPI_PASSWORD_SALT_FILE: /run/secrets/password_salt
     networks:
       - cloudflare
+      - tsdproxy
     labels:
+      com.centurylinklabs.watchtower.enable: true
       tsdproxy.enable: "true"
       tsdproxy.name: wakapi
-      com.centurylinklabs.watchtower.enable: true
+      zero-tunnel.enable: true
+      zero-tunnel.subdomain: wakapi
+      zero-tunnel.port: 3000
     secrets:
       - source: password_salt
         target: password_salt
@@ -30,6 +36,7 @@ secrets:
 
 networks:
   default:
+    name: wakapi
   cloudflare:
     name: cloudflare_tunnel
     external: true
