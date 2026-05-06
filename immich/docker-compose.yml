@@ -76,7 +76,7 @@ networks:
   default:
     name: immich
   cloudflare:
-    name: cloudflare-tunnel
+    name: cloudflare_tunnel
     external: true
   tsdproxy:
     name: tsdproxy
